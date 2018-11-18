@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Game;
+use App\Team;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreGamesRequest;
 use App\Http\Requests\Admin\UpdateGamesRequest;
+use App\Jobs\ProcessGames;
 
 class GamesController extends Controller
 {
@@ -42,5 +44,16 @@ class GamesController extends Controller
         $Game = Game::findOrFail($id);
         $Game->delete();
         return '';
+    }
+
+    public function startGame()
+    {
+        $games = Game::where('status', 1)->get();
+
+        foreach ($games as $game) {
+            $team1 = Team::select()->where('id' , $game['team1_id'])->first();
+            $team2 = Team::select()->where('id' , $game['team2_id'])->first();
+            dispatch(new ProcessGames($game, $team1, $team2));
+        }
     }
 }
