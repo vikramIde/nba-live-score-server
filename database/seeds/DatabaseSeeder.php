@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call(GameSeed::class);
         $this->call(PlayerSeed::class);
         $this->call(RoleSeed::class);
+        $this->call(RuleSeed::class);
+        $this->call(ScoreSeed::class);
         $this->call(UserSeed::class);
 
     }
