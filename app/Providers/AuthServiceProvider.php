@@ -120,5 +120,39 @@ class AuthServiceProvider extends ServiceProvider
             return in_array($user->role_id, [1, 2]);
         });
 
+        // Auth gates for: Rules
+        Gate::define('rule_access', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('rule_create', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('rule_edit', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('rule_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('rule_delete', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+
+        // Auth gates for: Score
+        Gate::define('score_access', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('score_create', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('score_edit', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('score_view', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+        Gate::define('score_delete', function ($user) {
+            return in_array($user->role_id, [1, 2]);
+        });
+
     }
 }

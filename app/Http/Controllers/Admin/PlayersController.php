@@ -121,9 +121,12 @@ class PlayersController extends Controller
         if (! Gate::allows('player_view')) {
             return abort(401);
         }
+        
+        $teams = \App\Team::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');$scores = \App\Score::where('players_id', $id)->get();
+
         $player = Player::findOrFail($id);
 
-        return view('admin.players.show', compact('player'));
+        return view('admin.players.show', compact('player', 'scores'));
     }
 
 

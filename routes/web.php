@@ -35,6 +35,14 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('games_mass_destroy', ['uses' => 'Admin\GamesController@massDestroy', 'as' => 'games.mass_destroy']);
     Route::post('games_restore/{id}', ['uses' => 'Admin\GamesController@restore', 'as' => 'games.restore']);
     Route::delete('games_perma_del/{id}', ['uses' => 'Admin\GamesController@perma_del', 'as' => 'games.perma_del']);
+    Route::resource('rules', 'Admin\RulesController');
+    Route::post('rules_mass_destroy', ['uses' => 'Admin\RulesController@massDestroy', 'as' => 'rules.mass_destroy']);
+    Route::post('rules_restore/{id}', ['uses' => 'Admin\RulesController@restore', 'as' => 'rules.restore']);
+    Route::delete('rules_perma_del/{id}', ['uses' => 'Admin\RulesController@perma_del', 'as' => 'rules.perma_del']);
+    Route::resource('scores', 'Admin\ScoresController');
+    Route::post('scores_mass_destroy', ['uses' => 'Admin\ScoresController@massDestroy', 'as' => 'scores.mass_destroy']);
+    Route::post('scores_restore/{id}', ['uses' => 'Admin\ScoresController@restore', 'as' => 'scores.restore']);
+    Route::delete('scores_perma_del/{id}', ['uses' => 'Admin\ScoresController@perma_del', 'as' => 'scores.perma_del']);
 
 
 

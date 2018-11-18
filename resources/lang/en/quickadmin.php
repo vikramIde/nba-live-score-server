@@ -7,6 +7,8 @@ return [
 		'teams' => [		'title' => 'Teams',		'fields' => [			'name' => 'Name',		],	],
 		'players' => [		'title' => 'Players',		'fields' => [			'team' => 'Team',			'name' => 'Name',			'surname' => 'Surname',			'birth-date' => 'Birth date',		],	],
 		'games' => [		'title' => 'Games',		'fields' => [			'team1' => 'Team1',			'team2' => 'Team2',			'results1' => 'Results1',			'results2' => 'Results2',		],	],
+		'rules' => [		'title' => 'Rules',		'fields' => [			'name' => 'Name',			'value' => 'Value',		],	],
+		'score' => [		'title' => 'Score',		'fields' => [			'games' => 'Games id',			'players' => 'Players id',			'rules' => 'Rules id',		],	],
 	'qa_create' => 'Create',
 	'qa_save' => 'Save',
 	'qa_edit' => 'Edit',

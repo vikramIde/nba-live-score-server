@@ -123,9 +123,13 @@ class GamesController extends Controller
         if (! Gate::allows('game_view')) {
             return abort(401);
         }
+        
+        $team1s = \App\Team::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');
+        $team2s = \App\Team::get()->pluck('name', 'id')->prepend(trans('quickadmin.qa_please_select'), '');$scores = \App\Score::where('games_id', $id)->get();
+
         $game = Game::findOrFail($id);
 
-        return view('admin.games.show', compact('game'));
+        return view('admin.games.show', compact('game', 'scores'));
     }
 
 

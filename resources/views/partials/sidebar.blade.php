@@ -67,6 +67,22 @@
                 </a>
             </li>@endcan
             
+            @can('rule_access')
+            <li>
+                <a href="{{ route('admin.rules.index') }}">
+                    <i class="fa fa-bullseye"></i>
+                    <span>@lang('quickadmin.rules.title')</span>
+                </a>
+            </li>@endcan
+            
+            @can('score_access')
+            <li>
+                <a href="{{ route('admin.scores.index') }}">
+                    <i class="fa fa-sort-numeric-asc"></i>
+                    <span>@lang('quickadmin.score.title')</span>
+                </a>
+            </li>@endcan
+            
 
             
 
