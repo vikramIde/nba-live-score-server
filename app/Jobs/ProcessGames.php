@@ -11,6 +11,8 @@ use Log;
 use Carbon\Carbon;
 use App\Player;
 use App\Rule;
+use App\Score;
+use App\Game;
 
 class ProcessGames implements ShouldQueue
 {
@@ -53,19 +55,19 @@ class ProcessGames implements ShouldQueue
             $players = self::getPlayersId();
             $rules = self::getAllRules();
 
-            //print_r($players);
-            //print_r($rules);
-
             $endInterval = 48;
+             self::updateGameStatus($this->game['id'], 'live');
             for ($interval = 1; $interval <= $endInterval; $interval++) {
                 $keyPlayer = array_rand($players);
                 $keyRule = array_rand($rules);
-                //self::updateScoreTable($this->game['id'], $players[$keyPlayer], $rules[$keyRule]); 
+                self::updateScoreTable($this->game['id'], $players[$keyPlayer], $rules[$keyRule]); 
                 Log::info(Carbon::now());
                 Log::info($interval);
                 sleep(1);
                 //flush();
             }
+
+            self::updateGameStatus($this->game['id'], 'finished');
    
         } catch (Exception $e) {
             Log::info('Error in ProcessGames:: ',['Job Error'=>$e->getMessage(),'timeStamp'=>date("Y-m-d h:i:sa")]);
@@ -84,7 +86,7 @@ class ProcessGames implements ShouldQueue
         //     }
         // }
     }
-
+    //self
     public function getPlayersId() {
         $result = [];
         $players = Player::select('id')->where('team_id' , $this->team1['id'])->orWhere('team_id' , $this->team2['id'])->get();
@@ -103,6 +105,59 @@ class ProcessGames implements ShouldQueue
     }
 
     public function updateScoreTable($gameId, $playerId, $rulesId) {
-        Log::info("Game id ".$gameId." Player ".$playerId." Rule ".$rulesId);
+
+        try {
+            Log::info("Game id ".$gameId." Player ".$playerId." Rule ".$rulesId);
+            $scoreTable = new Score;
+            $scoreTable->games_id = $gameId;
+            $scoreTable->players_id = $playerId
+            $scoreTable->rules_id = $rulesId;
+            $scoreTable->save();
+            Log::info("Score Saved in the Table ".$scoreTable);
+        } catch (Exception $e) {
+            Log::info("Error occured in storing score table ".$e->getMessage());
+        }
+    }
+
+    public function updateGameStatus($gameId , $status) {
+
+        try {
+            Log::info("Game id ".$gameId." Statua ".$status);
+
+            switch ($status) {
+                case 'live':
+                    $statusValue = 2;
+                    $results1 = 0;
+                    $results2 = 0;
+                    break;
+                case 'finished':
+                    $statusValue = 3;
+                    $results1 = 0; //write queery to calculate the result
+                    $results2 = 0; //write queery to calculate the result
+                    break;
+                case 'prepare':
+                    $statusValue = 1;
+                    $results1 = 0;
+                    $results2 = 0;
+                    break;
+                default:
+                    $statusValue = 0;
+                    $results1 = 0;
+                    $results2 = 0;
+                    break;
+            }
+
+            $gameTable = Game::findOrFail($gameId);
+            $gameTable->status = $statusValue
+            $gameTable->results1 = 0;
+            $gameTable->results2 = 0;
+            $gameTable->attack_count = $rulesId;
+            /*  attack_count = select count(id) from scores where rule_id == 6 group by team_id  */
+            $gameTable->save();
+
+            Log::info("Game table Updated ".$gameTable);
+        } catch (Exception $e) {
+            Log::info("Error occured in updating game table ".$e->getMessage());
+        }
     }
 }
