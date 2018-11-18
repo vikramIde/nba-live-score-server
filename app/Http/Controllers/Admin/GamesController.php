@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Game;
+use App\Team;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
@@ -21,7 +22,6 @@ class GamesController extends Controller
         if (! Gate::allows('game_access')) {
             return abort(401);
         }
-
 
         if (request('show_deleted') == 1) {
             if (! Gate::allows('game_delete')) {
@@ -65,8 +65,6 @@ class GamesController extends Controller
         }
         $game = Game::create($request->all());
 
-
-
         return redirect()->route('admin.games.index');
     }
 
@@ -105,8 +103,6 @@ class GamesController extends Controller
         }
         $game = Game::findOrFail($id);
         $game->update($request->all());
-
-
 
         return redirect()->route('admin.games.index');
     }

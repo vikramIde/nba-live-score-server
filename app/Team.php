@@ -17,9 +17,11 @@ class Team extends Model
     protected $fillable = ['name'];
     protected $hidden = [];
     
+
 	public function players()
     {
         return $this->hasMany(Player::class, 'team_id','id')->withTrashed();
     }
     
+
 }

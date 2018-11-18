@@ -66,8 +66,6 @@ class ScoresController extends Controller
         }
         $score = Score::create($request->all());
 
-
-
         return redirect()->route('admin.scores.index');
     }
 
@@ -107,8 +105,6 @@ class ScoresController extends Controller
         }
         $score = Score::findOrFail($id);
         $score->update($request->all());
-
-
 
         return redirect()->route('admin.scores.index');
     }

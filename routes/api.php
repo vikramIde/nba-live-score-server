@@ -7,4 +7,6 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\V1', 'as' => 'api.'], funct
         Route::resource('players', 'PlayersController', ['except' => ['create', 'edit']]);
         Route::resource('teams', 'TeamsController', ['except' => ['create', 'edit']]);
         Route::get('scores/game/{gameid}', 'ScoresController@showByGamesId');
+
+        Route::get('start-game', 'GamesController@startGame');
 });

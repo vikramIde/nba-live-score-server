@@ -15,6 +15,7 @@ class Update1542527542GamesTable extends Migration
         Schema::table('games', function (Blueprint $table) {
             
 if (!Schema::hasColumn('games', 'status')) {
+                $table->integer('attack_count')->default(0);
                 $table->integer('status')->nullable();
                 }
         });
