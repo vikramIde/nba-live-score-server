@@ -44,7 +44,8 @@ class ProcessGames implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('Starting the Game for  ',['jobName'=>$this->game['id'],'timeStamp'=>date("Y-m-d h:i:sa")]);
+        Log::info('Starting the Game for  ',['jobName'=>$this->game['id'], 'timeStamp'=>date("Y-m-d h:i:sa")]);
+        Log::info('Game details' , [ 'Game'=>$this->game['id'], 'Team1' => $this->team1['id'], 'Team2' => $this->team2['id'] ]);
         echo "The Match ".$this->game['id']." Started between ".$this->team1['name'].' V/S '.$this->team2['name'].'<br/>';
 
         try {
@@ -52,8 +53,8 @@ class ProcessGames implements ShouldQueue
             $players = self::getPlayersId();
             $rules = self::getAllRules();
 
-            print_r($players);
-            print_r($rules);
+            //print_r($players);
+            //print_r($rules);
 
             $endInterval = 48;
             for ($interval = 1; $interval <= $endInterval; $interval++) {
@@ -62,8 +63,8 @@ class ProcessGames implements ShouldQueue
                 //self::updateScoreTable($this->game['id'], $players[$keyPlayer], $rules[$keyRule]); 
                 Log::info(Carbon::now());
                 Log::info($interval);
-                sleep(5);
-                flush();
+                sleep(1);
+                //flush();
             }
    
         } catch (Exception $e) {
