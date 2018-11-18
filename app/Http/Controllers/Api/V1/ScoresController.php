@@ -12,20 +12,25 @@ class ScoresController extends Controller
 {
     public function index()
     {
-        return Score::all();
+        return Score::with('games', 'players','rules')->get();
     }
 
     public function show($id)
     {
-        return Score::findOrFail($id);
+
+        return Score::with('games', 'players','rules')->findOrFail($id);
+    }
+
+    public function showByGamesId($id)
+    {
+
+        return Score::with('games', 'players','rules')->where('games_id', '=', $id)->get();
     }
 
     public function update(UpdateScoresRequest $request, $id)
     {
         $score = Score::findOrFail($id);
         $score->update($request->all());
-        
-
         return $score;
     }
 

@@ -66,5 +66,10 @@ class Player extends Model
     {
         return $this->belongsTo(Team::class, 'team_id')->withTrashed();
     }
+
+    public function scores()
+    {
+        return $this->hasMany(Score::class, 'players_id','id')->withTrashed();
+    }
     
 }

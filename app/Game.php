@@ -20,7 +20,7 @@ class Game extends Model
 
     protected $fillable = ['results1', 'results2', 'status', 'team1_id', 'team2_id'];
     protected $hidden = [];
-    
+    public $result = [];
     
 
     /**
@@ -70,12 +70,28 @@ class Game extends Model
     
     public function team1()
     {
-        return $this->belongsTo(Team::class, 'team1_id')->withTrashed();
+        return $this->belongsTo(Team::class, 'teams1_id')->withTrashed();
     }
     
     public function team2()
     {
-        return $this->belongsTo(Team::class, 'team2_id')->withTrashed();
+        return $this->belongsTo(Team::class, 'teams2_id')->withTrashed();
+    }
+
+    function fetchMap($data)
+    {
+        $this->result['flag'] = 0;
+        $this->result['data'] = [];
+        $this->result['error'] = "";
+        try {
+            $this->result['data'] = $this->where($data['conditions'])->get();
+            $this->result['flag'] = 1;
+        } catch (Exception $e) {
+            $this->result['error'] = $e->getmessage();
+        }
+
+        return $this->result;
+        
     }
     
 }
