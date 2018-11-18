@@ -9,6 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Log;
 use Carbon\Carbon;
+use App\Player;
+use App\Rule;
 
 class ProcessGames implements ShouldQueue
 {
@@ -46,15 +48,27 @@ class ProcessGames implements ShouldQueue
         echo "The Match ".$this->game['id']." Started between ".$this->team1['name'].' V/S '.$this->team2['name'].'<br/>';
 
         try {
-            $now = Carbon::now();
-            $endTime = Carbon::now()->addSeconds(240);;
-            echo ($now); 
-            echo ($endTime);
-                    
-        } catch (Exception $e) {
-            echo $e->getMessage(); 
-        }
 
+            $players = self::getPlayersId();
+            $rules = self::getAllRules();
+
+            print_r($players);
+            print_r($rules);
+
+            $endInterval = 48;
+            for ($interval = 1; $interval <= $endInterval; $interval++) {
+                $keyPlayer = array_rand($players);
+                $keyRule = array_rand($rules);
+                //self::updateScoreTable($this->game['id'], $players[$keyPlayer], $rules[$keyRule]); 
+                Log::info(Carbon::now());
+                Log::info($interval);
+                sleep(5);
+                flush();
+            }
+   
+        } catch (Exception $e) {
+            Log::info('Error in ProcessGames:: ',['Job Error'=>$e->getMessage(),'timeStamp'=>date("Y-m-d h:i:sa")]);
+        }
 
         // unset($this->modelObj, $this->fieldObj, $this->helperObj, $this->result);
         // $this->modelObj = new \App\Game();
@@ -68,5 +82,26 @@ class ProcessGames implements ShouldQueue
         //         }
         //     }
         // }
+    }
+
+    public function getPlayersId() {
+        $result = [];
+        $players = Player::select('id')->where('team_id' , $this->team1['id'])->orWhere('team_id' , $this->team2['id'])->get();
+        foreach ($players as $key => $value) {
+            $result[] = $value['id'];
+        }
+        return $result;
+    }    
+    public function getAllRules() {
+        $result = [];
+        $rules = Rule::select('id')->get();
+        foreach ($rules as $key => $value) {
+            $result[] = $value['id'];
+        }
+        return $result;
+    }
+
+    public function updateScoreTable($gameId, $playerId, $rulesId) {
+        Log::info("Game id ".$gameId." Player ".$playerId." Rule ".$rulesId);
     }
 }
