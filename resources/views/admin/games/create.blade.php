@@ -58,6 +58,18 @@
                     @endif
                 </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12 form-group">
+                    {!! Form::label('status', trans('quickadmin.games.fields.status').'', ['class' => 'control-label']) !!}
+                    {!! Form::number('status', old('status'), ['class' => 'form-control', 'placeholder' => '']) !!}
+                    <p class="help-block"></p>
+                    @if($errors->has('status'))
+                        <p class="help-block">
+                            {{ $errors->first('status') }}
+                        </p>
+                    @endif
+                </div>
+            </div>
             
         </div>
     </div>

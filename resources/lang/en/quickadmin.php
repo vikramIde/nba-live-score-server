@@ -6,7 +6,7 @@ return [
 		'users' => [		'title' => 'Users',		'fields' => [			'name' => 'Name',			'email' => 'Email',			'password' => 'Password',			'role' => 'Role',			'remember-token' => 'Remember token',		],	],
 		'teams' => [		'title' => 'Teams',		'fields' => [			'name' => 'Name',		],	],
 		'players' => [		'title' => 'Players',		'fields' => [			'team' => 'Team',			'name' => 'Name',			'surname' => 'Surname',			'birth-date' => 'Birth date',		],	],
-		'games' => [		'title' => 'Games',		'fields' => [			'team1' => 'Team1',			'team2' => 'Team2',			'results1' => 'Results1',			'results2' => 'Results2',		],	],
+		'games' => [		'title' => 'Games',		'fields' => [			'team1' => 'Team1',			'team2' => 'Team2',			'results1' => 'Results1',			'results2' => 'Results2',			'status' => 'Status',		],	],
 		'rules' => [		'title' => 'Rules',		'fields' => [			'name' => 'Name',			'value' => 'Value',		],	],
 		'score' => [		'title' => 'Score',		'fields' => [			'games' => 'Games id',			'players' => 'Players id',			'rules' => 'Rules id',		],	],
 	'qa_create' => 'Create',

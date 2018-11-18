@@ -25,6 +25,7 @@ class StoreGamesRequest extends FormRequest
         return [
             'results1' => 'max:2147483647|nullable|numeric',
             'results2' => 'max:2147483647|nullable|numeric',
+            'status' => 'max:2147483647|nullable|numeric',
         ];
     }
 }

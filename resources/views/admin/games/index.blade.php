@@ -37,6 +37,7 @@
                         <th>@lang('quickadmin.games.fields.team2')</th>
                         <th>@lang('quickadmin.games.fields.results1')</th>
                         <th>@lang('quickadmin.games.fields.results2')</th>
+                        <th>@lang('quickadmin.games.fields.status')</th>
                         @if( request('show_deleted') == 1 )
                         <th>&nbsp;</th>
                         @else
@@ -57,6 +58,7 @@
                                 <td field-key='team2'>{{ $game->team2->name ?? '' }}</td>
                                 <td field-key='results1'>{{ $game->results1 }}</td>
                                 <td field-key='results2'>{{ $game->results2 }}</td>
+                                <td field-key='status'>{{ $game->status }}</td>
                                 @if( request('show_deleted') == 1 )
                                 <td>
                                     @can('game_delete')
@@ -101,7 +103,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="9">@lang('quickadmin.qa_no_entries_in_table')</td>
+                            <td colspan="10">@lang('quickadmin.qa_no_entries_in_table')</td>
                         </tr>
                     @endif
                 </tbody>

@@ -28,6 +28,10 @@
                             <th>@lang('quickadmin.games.fields.results2')</th>
                             <td field-key='results2'>{{ $game->results2 }}</td>
                         </tr>
+                        <tr>
+                            <th>@lang('quickadmin.games.fields.status')</th>
+                            <td field-key='status'>{{ $game->status }}</td>
+                        </tr>
                     </table>
                 </div>
             </div><!-- Nav tabs -->

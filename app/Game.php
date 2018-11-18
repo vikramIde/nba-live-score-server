@@ -12,12 +12,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $team2
  * @property integer $results1
  * @property integer $results2
+ * @property integer $status
 */
 class Game extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['results1', 'results2', 'team1_id', 'team2_id'];
+    protected $fillable = ['results1', 'results2', 'status', 'team1_id', 'team2_id'];
     protected $hidden = [];
     
     
@@ -56,6 +57,15 @@ class Game extends Model
     public function setResults2Attribute($input)
     {
         $this->attributes['results2'] = $input ? $input : null;
+    }
+
+    /**
+     * Set attribute to money format
+     * @param $input
+     */
+    public function setStatusAttribute($input)
+    {
+        $this->attributes['status'] = $input ? $input : null;
     }
     
     public function team1()
