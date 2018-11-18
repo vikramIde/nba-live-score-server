@@ -12,7 +12,7 @@ class GamesController extends Controller
 {
     public function index()
     {
-        return Game::all();
+        return Game::with('team1', 'team2')->get();
     }
 
     public function show($id)

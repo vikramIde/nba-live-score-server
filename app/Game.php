@@ -70,12 +70,12 @@ class Game extends Model
     
     public function team1()
     {
-        return $this->belongsTo(Team::class, 'teams1_id')->withTrashed();
+        return $this->belongsTo(Team::class, 'team1_id')->withTrashed();
     }
     
     public function team2()
     {
-        return $this->belongsTo(Team::class, 'teams2_id')->withTrashed();
+        return $this->belongsTo(Team::class, 'team2_id')->withTrashed();
     }
 
     function fetchMap($data)
