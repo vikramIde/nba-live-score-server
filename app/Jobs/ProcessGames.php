@@ -152,6 +152,9 @@ class ProcessGames implements ShouldQueue
             $gameTable->results1 = 0;
             $gameTable->results2 = 0;
             $gameTable->attack_count = $rulesId;
+            $x = DB::table('scores')->select('DB::raw(count(scores.id))')->leftJoin('players','scores.players_id','=','players.id')
+            ->leftJoin('teams','players.team_id','=','teams.id')->where('scores.rule_id','=',6)->groupBy('players.team_id');
+            dd($x);
             /*  attack_count = select count(id) from scores where rule_id == 6 group by team_id  */
             $gameTable->save();
 
