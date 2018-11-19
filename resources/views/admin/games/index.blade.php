@@ -6,6 +6,8 @@
     @can('game_create')
     <p>
         <a href="{{ route('admin.games.create') }}" class="btn btn-success">@lang('quickadmin.qa_add_new')</a>
+
+        
         
     </p>
     @endcan

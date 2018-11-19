@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('players_restore/{id}', ['uses' => 'Admin\PlayersController@restore', 'as' => 'players.restore']);
     Route::delete('players_perma_del/{id}', ['uses' => 'Admin\PlayersController@perma_del', 'as' => 'players.perma_del']);
     Route::resource('games', 'Admin\GamesController');
+    
     Route::post('games_mass_destroy', ['uses' => 'Admin\GamesController@massDestroy', 'as' => 'games.mass_destroy']);
     Route::post('games_restore/{id}', ['uses' => 'Admin\GamesController@restore', 'as' => 'games.restore']);
     Route::delete('games_perma_del/{id}', ['uses' => 'Admin\GamesController@perma_del', 'as' => 'games.perma_del']);

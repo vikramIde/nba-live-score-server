@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Game;
 use App\Team;
+use Artisan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreGamesRequest;
@@ -48,12 +49,6 @@ class GamesController extends Controller
 
     public function startGame()
     {
-        $games = Game::where('status', 1)->get();
-
-        foreach ($games as $game) {
-            $team1 = Team::select()->where('id' , $game['team1_id'])->first();
-            $team2 = Team::select()->where('id' , $game['team2_id'])->first();
-            dispatch(new ProcessGames($game, $team1, $team2));
-        }
+        $exitCode = Artisan::call('games:start', []);
     }
 }

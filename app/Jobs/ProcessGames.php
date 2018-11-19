@@ -8,12 +8,14 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Log;
+use DB;
+use App\Events\StartGame;
 use Carbon\Carbon;
 use App\Player;
 use App\Rule;
 use App\Score;
 use App\Game;
-
+use Pusher\Laravel\Facades\Pusher;
 class ProcessGames implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -55,20 +57,25 @@ class ProcessGames implements ShouldQueue
             $players = self::getPlayersId();
             $rules = self::getAllRules();
 
+
             $endInterval = 48;
              self::updateGameStatus($this->game['id'], 'live');
+             Pusher::trigger('my-channel', 'update-matches', ['message' => 'New entry on matches table']);
+
             for ($interval = 1; $interval <= $endInterval; $interval++) {
                 $keyPlayer = array_rand($players);
                 $keyRule = array_rand($rules);
                 self::updateScoreTable($this->game['id'], $players[$keyPlayer], $rules[$keyRule]); 
+                /* Event fires when there's an entry in scores table*/
+                Pusher::trigger('my-channel', 'update-scores', ['message' => 'New entry on scores table']);
                 Log::info(Carbon::now());
                 Log::info($interval);
-                sleep(1);
-                //flush();
+                sleep(5);
+                flush();
             }
 
             self::updateGameStatus($this->game['id'], 'finished');
-   
+            Pusher::trigger('my-channel', 'update-matches', ['message' => 'New entry on matches table']);
         } catch (Exception $e) {
             Log::info('Error in ProcessGames:: ',['Job Error'=>$e->getMessage(),'timeStamp'=>date("Y-m-d h:i:sa")]);
         }
@@ -110,7 +117,7 @@ class ProcessGames implements ShouldQueue
             Log::info("Game id ".$gameId." Player ".$playerId." Rule ".$rulesId);
             $scoreTable = new Score;
             $scoreTable->games_id = $gameId;
-            $scoreTable->players_id = $playerId
+            $scoreTable->players_id = $playerId;
             $scoreTable->rules_id = $rulesId;
             $scoreTable->save();
             Log::info("Score Saved in the Table ".$scoreTable);
@@ -148,14 +155,20 @@ class ProcessGames implements ShouldQueue
             }
 
             $gameTable = Game::findOrFail($gameId);
-            $gameTable->status = $statusValue
+            $gameTable->status = $statusValue;
             $gameTable->results1 = 0;
             $gameTable->results2 = 0;
-            $gameTable->attack_count = $rulesId;
-            $x = DB::table('scores')->select('DB::raw(count(scores.id))')->leftJoin('players','scores.players_id','=','players.id')
-            ->leftJoin('teams','players.team_id','=','teams.id')->where('scores.rule_id','=',6)->groupBy('players.team_id');
-            dd($x);
-            /*  attack_count = select count(id) from scores where rule_id == 6 group by team_id  */
+            // $gameTable->attack_count = $rulesId;
+            DB::enableQueryLog();
+            $x = DB::table('scores')->select(DB::raw('count(scores.id) as count,teams.id as team_id'))->leftJoin('players','scores.players_id','=','players.id')
+            ->leftJoin('teams','players.team_id','=','teams.id')->where('scores.rules_id','=',6)->groupBy('players.team_id')->get();
+            foreach ($x as  $value) {
+                if($value->team_id == $gameTable->team1_id)
+                    $gameTable->attack_count = $value->count;
+                if($value->team_id == $gameTable->team2_id)
+                    $gameTable->attack_count1 = $value->count;
+            }
+            
             $gameTable->save();
 
             Log::info("Game table Updated ".$gameTable);
